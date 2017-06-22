@@ -89,8 +89,9 @@ print """
     <link rel="stylesheet" type="text/css" href="/~horndo/matrixcalc/index.css">
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
 
-    <!-- This script enables MathML support for google chrome -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=MML_HTMLorMML"></script>
+    <!-- JQuery sources -->
+    <script language="JavaScript" type="text/javascript" src="/~horndo/js/jquery_cookie.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/~horndo/js/jquery.min.js"></script>
 
     <!-- Enable sweet alerts -->
     <script src="/~horndo/swal/sweetalert.min.js"></script>
@@ -103,14 +104,17 @@ print """
         }
 
         function enableChromeSupport() {
-            var isChrome = !!window.chrome && !!window.chrome.webstore;
-            if (isChrome) {
-                window.MathJax = { MathML: { extensions: ["mml3.js", "content-mathml.js"]}};
-                swal({
-                    title: "Chrome support experimental",
-                    text: "Chrome web browser does not natively support MathML and therefore this application will need to download some external javascripts.",
-                    type: "error",
-                    confirmButtonText: "Who cares..."});
+            if(!!window.chrome && !!window.chrome.webstore) {
+                jQuery.getScript("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=MML_HTMLorMML");
+                if (Cookies.get('chrome') != 'exists') {
+                    swal({
+                        title: "Chrome support experimental",
+                        text: "Chrome web browser does not natively support MathML and therefore this application will need to download some external javascripts.",
+                        type: "error",
+                        confirmButtonText: "Who cares..."});
+
+                    Cookies.set('chrome', 'exists', { expires: 1 });
+                }
             }
         }
 
