@@ -1,0 +1,24 @@
+.alert {
+  background-color: #c4453c;
+  color: #f6f6f6;
+  display: block;
+  font: bold 16px/40px sans-serif;
+  height: 40px;
+  position: absolute;
+  text-align: center;
+  text-decoration: none;
+  top: -45px;
+  width: 100%;
+  left: 0px;
+  animation: alert 1s ease forwards;
+}
+@keyframes alert {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { top: 0; }
+}
+
+.homepage {
+  position: absolute;
+  top: 30px;
+}
