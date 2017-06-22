@@ -105,10 +105,10 @@ print """
         function enableChromeSupport() {
             var isChrome = !!window.chrome && !!window.chrome.webstore;
             if (isChrome) {
-                //window.MathJax = { MathML: { extensions: ["mml3.js", "content-mathml.js"]}};
+                window.MathJax = { MathML: { extensions: ["mml3.js", "content-mathml.js"]}};
                 swal({
-                    title: "Chrome not supported",
-                    text: "Chrome web browser does not support MathML and therefore this application currently does not work on chrome",
+                    title: "Chrome support experimental",
+                    text: "Chrome web browser does not natively support MathML and therefore this application will need to download some external javascripts.",
                     type: "error",
                     confirmButtonText: "Who cares..."});
             }
@@ -181,17 +181,17 @@ print"""
         <h4 class="center">Input Matrices:</h4>
         <div id="container">
             <div style="display: inline-block;" class="box" id="matrix1">
-                <textarea name="matrix-a" cols="20" rows="10" style='resize: none;'>%s</textarea>
+                <textarea name="matrix-a" cols="20" rows="10" style='resize: none;'>{0}</textarea>
             </div>
             <div style="display: inline-block;" class="box" id="matrix2">
-                <textarea name="matrix-b" cols="20" rows="10" style='resize: none;'>%s</textarea>
+                <textarea name="matrix-b" cols="20" rows="10" style='resize: none;'>{1}</textarea>
             </div>
         </div>
         <div class="center">
             <input type="submit" value="calculate"/>
         </div>
     </form>
-""" % (a, b)
+""".format(a, b)
 
 # Actual script
 if mode == "mult":
@@ -200,27 +200,27 @@ if mode == "mult":
     except ValueError as e:
         print"""<script> swal({
             title: "Could not parse left Matrix",
-            text: "%s",
+            text: "{0}",
             type: "error",
-            confirmButtonText: "Ok"});</script>""" % (str(e))
+            confirmButtonText: "Ok"});</script>""".format(e)
         end()
     try:
         mb = parseTextToMatrix(b)
     except ValueError as e:
         print"""<script> swal({
             title: "Could not parse right Matrix",
-            text: "%s",
+            text: "{0}",
             type: "error",
-            confirmButtonText: "Ok"});</script>""" % (str(e))
+            confirmButtonText: "Ok"});</script>""".format(e)
         end()
     try:
         mc = ma * mb
     except ValueError as e:
         print"""<script> swal({
             title: "Could not multiply Matrices",
-            text: "%s",
+            text: "{0}",
             type: "error",
-            confirmButtonText: "Ok"});</script>""" % (str(e))
+            confirmButtonText: "Ok"});</script>""".format(e)
         end()
 
     print("<div class='center'><h3>Result:</h3><math style='display: inline-block;'>" + str(ma) + "<mo>&middot;</mo>" + str(mb) + "<mo>=</mo>" + str(mc) + "</math></div>")
@@ -230,9 +230,9 @@ elif mode == "tran":
     except ValueError as e:
         print"""<script> swal({
             title: "Could not parse Matrix",
-            text: "%s",
+            text: "{0}",
             type: "error",
-            confirmButtonText: "Ok"});</script>""" % (str(e))
+            confirmButtonText: "Ok"});</script>""".format(e)
         end()
 
     print("<div class='center'><h3>Result:</h3><math style='display: inline-block;'><msup>" + str(ma) + "<mi>T</mi></msup><mo>=</mo>" + str(ma.getTransposed()) + "</math></div>")
@@ -242,9 +242,9 @@ elif mode == "symm":
     except ValueError as e:
         print"""<script> swal({
             title: "Could not parse Matrix",
-            text: "%s",
+            text: "{0}",
             type: "error",
-            confirmButtonText: "Ok"});</script>""" % (str(e))
+            confirmButtonText: "Ok"});</script>""".format(e)
         end()
 
     print("<div class='center'><h3>Result:</h3><p>")
@@ -259,21 +259,21 @@ elif mode == "lrze":
     except ValueError as e:
         print"""<script> swal({
             title: "Could not parse Matrix",
-            text: "%s",
+            text: "{0}",
             type: "error",
-            confirmButtonText: "Ok"});</script>""" % (str(e))
+            confirmButtonText: "Ok"});</script>""".format(e)
         end()
 
     print("<div class='center'><h3>Result:</h3>")
     try:
         (c, l, r, p) = ma.getLR()
-        print("<math style='display: inline-block;'><mi>C</mi> <mo>=</mo>" + str(c) + "</math>")
-        print("<math style='display: inline-block;'><mi>L</mi> <mo>=</mo>" + str(l) + "</math>")
-        print("<math style='display: inline-block;'><mi>R</mi> <mo>=</mo>" + str(r) + "</math>")
-        print("<math style='display: inline-block;'><mi>P</mi> <mo>=</mo>" + str(p) + "</math>")
+        print("<math style='display: inline-block;'><mi>C</mi> <mo>=</mo>{0}</math>".format(c))
+        print("<math style='display: inline-block;'><mi>L</mi> <mo>=</mo>{0}</math>".format(l))
+        print("<math style='display: inline-block;'><mi>R</mi> <mo>=</mo>{0}</math>".format(r))
+        print("<math style='display: inline-block;'><mi>P</mi> <mo>=</mo>{0}</math>".format(p))
         print("</div>")
     except Exception as e:
-        print("An error occured during lr execution: " + repr(e) + "</div>")
+        print("An error occured during lr execution: {0}</div>".format(repr(e)))
         end()
 
 end()

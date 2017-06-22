@@ -16,7 +16,7 @@ class Matrix:
         if self.rowCount() == self.columnCount() and self.rowCount() == 1:
             if self[0][0] == 0:
                 return "<mn>0</mn>"
-            return "<mn>%s</mn>" % str(self[0][0])
+            return "<mn>{0}</mn>".format(self[0][0])
 
         string="<mfenced><mtable>"
 
