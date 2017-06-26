@@ -4,7 +4,14 @@
 # Import modules for CGI Handling
 import cgi, cgitb
 from matrix import Matrix
-from decimal import *
+from fractions import *
+
+def parseNum(n):
+    parts = n.split("/")
+    if len(parts) > 1:
+        return Fraction(parts[0])/Fraction(parts[1])
+    else:
+        return Fraction(n)
 
 def parseTextToMatrix(m):
     if not m:
@@ -32,7 +39,7 @@ def parseTextToMatrix(m):
             raise ValueError('All columns must have the same amount of elements')
 
         # Parse row
-        matrix[row] = [Decimal(val) for val in colVals]
+        matrix[row] = [parseNum(val) for val in colVals]
 
     return matrix
 

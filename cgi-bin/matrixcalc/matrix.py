@@ -1,4 +1,4 @@
-from decimal import *
+from fractions import *
 from collections import Iterable
 import copy
 
@@ -10,7 +10,7 @@ class Matrix:
         if columns < 1 or rows < 1:
             raise ValueError("Matrix dimensions must be greater than zero")
 
-        self._data = [[Decimal(0) for x in range(columns)] for y in range(rows)]
+        self._data = [[Fraction(0) for x in range(columns)] for y in range(rows)]
 
     def __str__(self):
         if self.rowCount() == self.columnCount() and self.rowCount() == 1:
@@ -76,7 +76,7 @@ class Matrix:
                 data.append(summed)
             return data
         else:
-            other = Decimal(other)
+            other = Fraction(other)
             c = Matrix(self.rowCount(), self.columnCount())
             for row in range(c.rowCount()):
                 for column in range(c.columnCount()):
@@ -111,9 +111,9 @@ class Matrix:
         if isinstance(value, Iterable):
             if not len(value) == self.columnCount():
                 raise ValueError("Can not change matrix length")
-            value = [Decimal(v) for v in value]
+            value = [Fraction(v) for v in value]
         else:
-            value = [Decimal(value) for i in range(self.columnCount())]
+            value = [Fraction(value) for i in range(self.columnCount())]
 
         self._data[indices] = value
 
@@ -162,11 +162,11 @@ class Matrix:
         for i in range(self.rowCount()):
             for j in range(i):
                 l[i][j] = t[i][j]
-                r[i][j] = Decimal(0)
-            l[i][i] = Decimal(1)
+                r[i][j] = Fraction(0)
+            l[i][i] = Fraction(1)
             r[i][i] = t[i][i]
             for j in range(i+1,self.columnCount()):
-                l[i][j] = Decimal(0)
+                l[i][j] = Fraction(0)
                 r[i][j] = t[i][j]
 
         return (t, l, r, p)
