@@ -149,14 +149,37 @@ class Matrix:
         return transposed
 
     '''
+    Returns determinant of this matrix
+    '''
+    def getDeterminant(self):
+        if self.rowCount() != self.columnCount():
+            raise ValueError("Determinant only defined for quadratic matrices")
+
+        # Abuse LR to obtain Determinant
+        (c, l, r, p, sc) = self.getLR()
+
+        # Obtain Determinant
+        var = Fraction(1)
+        for i in range(r.rowCount()):
+            var *= r[i][i]
+
+        # Fix sign based on swaps happened in Pivot
+        if sc % 2 != 0:
+            var = -var
+
+        return var
+
+    '''
     Calculates and returns the L/R components so that L * R = A
     @return c: combined L/R
     @return l: l Matrix
     @return r: r Matrix
+    @return p: p Pivot
+    @return sc: swap count
     '''
     def getLR(self):
         t = self.getCopy()
-        p = t.__lr()
+        (p, sc) = t.__lr()
         l = Matrix(self.rowCount(), self.columnCount())
         r = Matrix(self.rowCount(), self.columnCount())
         for i in range(self.rowCount()):
@@ -169,7 +192,7 @@ class Matrix:
                 l[i][j] = Fraction(0)
                 r[i][j] = t[i][j]
 
-        return (t, l, r, p)
+        return (t, l, r, p, sc)
 
     '''
     Mutating method for retrieving LR
@@ -180,6 +203,7 @@ class Matrix:
             return
 
         pivot = []
+        swapcount = 0
         for o in range(0, self.rowCount()-1):
             # Create Identity matrix
             m = Matrix(self.rowCount(), self.columnCount())
@@ -203,6 +227,9 @@ class Matrix:
             self[o] = self[index]
             self[index] = tmp
 
+            if index != o:
+                swapcount += 1
+
             # Append pivot matrix
             pivot.append(m)
 
@@ -221,7 +248,7 @@ class Matrix:
             else:
                 result = result * elem
 
-        return result
+        return (result, swapcount)
 
     '''
     Returns a deep copy of this object

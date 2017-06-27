@@ -98,6 +98,8 @@ print("""
                 document.getElementById("matrix2").style.display = 'none';
             } else if (selected == 'lrze') {
                 document.getElementById("matrix2").style.display = 'none';
+            } else if (selected == 'dete') {
+                document.getElementById("matrix2").style.display = 'none';
             }
         }
 

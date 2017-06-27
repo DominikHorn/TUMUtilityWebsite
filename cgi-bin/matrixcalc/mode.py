@@ -48,9 +48,6 @@ def parseTextToMatrix(m):
 Each mode implements one calculation mode
 '''
 class Mode:
-    def __init__(self):
-        pass
-
     def getShortDesc(self):
         pass
 
@@ -58,9 +55,6 @@ class Mode:
         pass
 
 class ModeMult(Mode):
-    def __init__(self):
-        pass
-
     def getShortDesc(self):
         return "multiply"
 
@@ -96,9 +90,6 @@ class ModeMult(Mode):
         print("<div class='center'><h3>Result:</h3><math style='display: inline-block;'>" + str(ma) + "<mo>&middot;</mo>" + str(mb) + "<mo>=</mo>" + str(mc) + "</math></div>")
 
 class ModeTran(Mode):
-    def __init__(self):
-        pass
-
     def getShortDesc(self):
         return "transpose"
 
@@ -116,9 +107,6 @@ class ModeTran(Mode):
         print("<div class='center'><h3>Result:</h3><math style='display: inline-block;'><msup>" + str(ma) + "<mi>T</mi></msup><mo>=</mo>" + str(ma.getTransposed()) + "</math></div>")
 
 class ModeSymm(Mode):
-    def __init__(self):
-        pass
-
     def getShortDesc(self):
         return "symmetry"
 
@@ -141,9 +129,6 @@ class ModeSymm(Mode):
         print("</p></div>")
 
 class ModeLRZE(Mode):
-    def __init__(self):
-        pass
-
     def getShortDesc(self):
         return "LR"
 
@@ -170,5 +155,23 @@ class ModeLRZE(Mode):
             print("An error occured during lr execution: {0}</div>".format(repr(e)))
             return
 
+class ModeDete(Mode):
+    def getShortDesc(self):
+        return "determinant"
+
+    def handle(self, a, b=None):
+        try:
+            ma = parseTextToMatrix(a)
+        except ValueError as e:
+            print("""<script> swal({
+                title: "Could not parse Matrix",
+                text: "{0}",
+                type: "error",
+                confirmButtonText: "Ok"});</script>""".format(e))
+            return
+
+        print("<div class='center'><h3>Result:</h3>")
+        print("<math style='display: inline-block;'><mi>det(A)</mi> <mo>=</mo> <mn>{0}</mn>".format(ma.getDeterminant()))
+
 def getModes():
-    return {"mult" : ModeMult(), "tran" : ModeTran(), "symm" : ModeSymm(), "lrze" : ModeLRZE()}
+    return {"mult" : ModeMult(), "tran" : ModeTran(), "symm" : ModeSymm(), "lrze" : ModeLRZE(), "dete" : ModeDete()}
