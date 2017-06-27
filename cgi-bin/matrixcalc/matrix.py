@@ -190,7 +190,8 @@ class Matrix:
             maxvalue = self[o][o]
             index = o
             for row in range(o+1, self.rowCount()):
-                if self[row][o] > maxvalue:
+                # Check for absolute value
+                if self[row][o]*self[row][o] > maxvalue*maxvalue:
                     index = row
                     maxvalue = self[row][o]
 
