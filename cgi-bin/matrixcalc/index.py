@@ -3,52 +3,7 @@
 
 # Import modules for CGI Handling
 import cgi, cgitb
-from matrix import Matrix
-from fractions import *
-
-def parseNum(n):
-    parts = n.split("/")
-    if len(parts) > 1:
-        return Fraction(parts[0])/Fraction(parts[1])
-    else:
-        return Fraction(n)
-
-def parseTextToMatrix(m):
-    if not m:
-        raise ValueError('Input matrix must not be None')
-
-    # Do validate
-    lines = filter(lambda x: len(x) > 0, m.splitlines())
-    rows = len(lines)
-    cols = None
-    matrix = None
-    for row in range(rows):
-        # Fetch matrix elements on each line
-        colVals = lines[row].split()
-
-        # Empty line
-        if len(colVals) == 0:
-            continue
-
-        # initialize (meh but it works)
-        if not cols:
-            cols = len(colVals)
-            if not matrix:
-                matrix = Matrix(len(filter(lambda r: len(r.split()) > 0, lines)), len(colVals))
-        elif cols != len(colVals):
-            raise ValueError('All columns must have the same amount of elements')
-
-        # Parse row
-        matrix[row] = [parseNum(val) for val in colVals]
-
-    return matrix
-
-def end():
-    print"""
-      </body>
-    </html>
-    """
-    exit()
+from mode import *
 
 # Create instance of FieldStorage
 form = cgi.FieldStorage()
@@ -58,17 +13,22 @@ a = form.getvalue('matrix-a')
 b = form.getvalue('matrix-b')
 mode = form.getvalue('mode')
 
+# Initialize other globals
+modes = getModes()
+
 if a == None:
     a = "1"
 if b == None:
     b = "1"
+if mode == None:
+    mode = "mult"
 
 # Start printing out html
 # Print header: REQUIRED FOR CLIENT
-print "Content-Type: text/html\r\n\r\n"
+print("Content-Type: text/html\r\n\r\n")
 
 # Actual html page
-print """
+print("""
 <html>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -172,21 +132,12 @@ print """
         <div style="display: block;">
             <p style="display: inline-block;">Calculation to be performed:</p>
             <select name="mode" onchange="selectBoxChanged()" id="matrixselect">
-"""
+""")
 
-# TODO replace with proper code
-if mode == "mult":
-    print("<option value='mult' selected>multiply</option><option value='tran'>transpose</option><option value='symm'>symmetry</option><option value='lrze'>LR</option>")
-elif mode == "tran":
-    print("<option value='mult'>multiply</option><option value='tran' selected>transpose</option><option value='symm'>symmetry</option><option value='lrze'>LR</option>")
-elif mode == "symm":
-    print("<option value='mult'>multiply</option><option value='tran'>transpose</option><option value='symm' selected>symmetry</option><option value='lrze'>LR</option>")
-elif mode == "lrze":
-    print("<option value='mult'>multiply</option><option value='tran'>transpose</option><option value='symm'>symmetry</option><option value='lrze' selected>LR</option>")
-else:
-    print("<option value='mult'>multiply</option><option value='tran'>transpose</option><option value='symm'>symmetry</option><option value='lrze'>LR</option>")
+for key in modes:
+    print("<option value='{0}' {1}>{2}</option>".format(key, "selected" if key == mode else "", modes[key].getShortDesc()))
 
-print"""
+print("""
             </select>
         </div>
         <h4 class="center">Input Matrices:</h4>
@@ -202,89 +153,13 @@ print"""
             <input type="submit" value="calculate"/>
         </div>
     </form>
-""".format(a, b)
+""".format(a, b))
 
-# Actual script
-if mode == "mult":
-    try:
-        ma = parseTextToMatrix(a)
-    except ValueError as e:
-        print"""<script> swal({
-            title: "Could not parse left Matrix",
-            text: "{0}",
-            type: "error",
-            confirmButtonText: "Ok"});</script>""".format(e)
-        end()
-    try:
-        mb = parseTextToMatrix(b)
-    except ValueError as e:
-        print"""<script> swal({
-            title: "Could not parse right Matrix",
-            text: "{0}",
-            type: "error",
-            confirmButtonText: "Ok"});</script>""".format(e)
-        end()
-    try:
-        mc = ma * mb
-    except ValueError as e:
-        print"""<script> swal({
-            title: "Could not multiply Matrices",
-            text: "{0}",
-            type: "error",
-            confirmButtonText: "Ok"});</script>""".format(e)
-        end()
+# Let mode impl handle the actual wörk
+m = modes[mode]
+m.handle(a, b)
 
-    print("<div class='center'><h3>Result:</h3><math style='display: inline-block;'>" + str(ma) + "<mo>&middot;</mo>" + str(mb) + "<mo>=</mo>" + str(mc) + "</math></div>")
-elif mode == "tran":
-    try:
-        ma = parseTextToMatrix(a)
-    except ValueError as e:
-        print"""<script> swal({
-            title: "Could not parse Matrix",
-            text: "{0}",
-            type: "error",
-            confirmButtonText: "Ok"});</script>""".format(e)
-        end()
-
-    print("<div class='center'><h3>Result:</h3><math style='display: inline-block;'><msup>" + str(ma) + "<mi>T</mi></msup><mo>=</mo>" + str(ma.getTransposed()) + "</math></div>")
-elif mode == "symm":
-    try:
-        ma = parseTextToMatrix(a)
-    except ValueError as e:
-        print"""<script> swal({
-            title: "Could not parse Matrix",
-            text: "{0}",
-            type: "error",
-            confirmButtonText: "Ok"});</script>""".format(e)
-        end()
-
-    print("<div class='center'><h3>Result:</h3><p>")
-    if ma.isSymmetrical():
-        print("The matrix is symmetric, meaning <math style='display: inline-block;'><msup><mi>A</mi><mi>T</mi></msup> <mo>=</mo> <mi>A</mi></math>")
-    else:
-        print("The matrix is not symmetric, meaning <math style='display: inline-block;'><msup><mi>A</mi><mi>T</mi></msup> <mo>&ne;</mo> <mi>A</mi></math>")
-    print("</p></div>")
-elif mode == "lrze":
-    try:
-        ma = parseTextToMatrix(a)
-    except ValueError as e:
-        print"""<script> swal({
-            title: "Could not parse Matrix",
-            text: "{0}",
-            type: "error",
-            confirmButtonText: "Ok"});</script>""".format(e)
-        end()
-
-    print("<div class='center'><h3>Result:</h3>")
-    try:
-        (c, l, r, p) = ma.getLR()
-        print("<math style='display: inline-block;'><mi>C</mi> <mo>=</mo>{0}</math>".format(c))
-        print("<math style='display: inline-block;'><mi>L</mi> <mo>=</mo>{0}</math>".format(l))
-        print("<math style='display: inline-block;'><mi>R</mi> <mo>=</mo>{0}</math>".format(r))
-        print("<math style='display: inline-block;'><mi>P</mi> <mo>=</mo>{0}</math>".format(p))
-        print("</div>")
-    except Exception as e:
-        print("An error occured during lr execution: {0}</div>".format(repr(e)))
-        end()
-
-end()
+print("""
+  </body>
+</html>
+""")
