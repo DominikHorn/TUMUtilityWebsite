@@ -33,6 +33,7 @@ print("""
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0' name='viewport'/>
 
     <link rel="apple-touch-icon" sizes="57x57" href="/~horndo/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/~horndo/favicon/apple-icon-60x60.png">
@@ -91,7 +92,7 @@ print("""
 
             // TODO: Debate whether splitting into every single available case is actually desirable
             if (selected == 'mult') {
-                document.getElementById("matrix2").style.display = 'inline-block';
+                document.getElementById("matrix2").style.display = 'block';
             } else if (selected == 'tran') {
                 document.getElementById("matrix2").style.display = 'none';
             } else if (selected == 'symm') {
@@ -100,6 +101,8 @@ print("""
                 document.getElementById("matrix2").style.display = 'none';
             } else if (selected == 'dete') {
                 document.getElementById("matrix2").style.display = 'none';
+            } else if (selected == 'solv') {
+                document.getElementById("matrix2").style.display = 'block';
             }
         }
 
@@ -144,10 +147,10 @@ print("""
         </div>
         <h4 class="center">Input Matrices:</h4>
         <div id="container">
-            <div style="display: inline-block;" class="box" id="matrix1">
+            <div style="display: block;" class="box" id="matrix1">
                 <textarea name="matrix-a" cols="20" rows="10" style='resize: none;'>{0}</textarea>
             </div>
-            <div style="display: inline-block;" class="box" id="matrix2">
+            <div style="display: block;" class="box" id="matrix2">
                 <textarea name="matrix-b" cols="20" rows="10" style='resize: none;'>{1}</textarea>
             </div>
         </div>
@@ -162,6 +165,8 @@ m = modes[mode]
 m.handle(a, b)
 
 print("""
+  <footer>
+  </footer>
   </body>
 </html>
 """)

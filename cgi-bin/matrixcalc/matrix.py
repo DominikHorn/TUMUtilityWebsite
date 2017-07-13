@@ -37,6 +37,28 @@ class Matrix:
         return self.__str__()
 
     '''
+    Returns result of self + other
+    '''
+    def __add__(self, other):
+        if other.rowCount != self.rowCount() or other.columnCount() != self.columnCount():
+            raise ValueError("Matrix dimensions have to match for addition")
+
+        result = Matrix(self.rowCount(), self.columnCount())
+        for row in range(self.rowCount()):
+            result[row] = [self[row][column]+other[row][column] for column in range(self.columnCount())]
+
+    '''
+    Returns result of self - other
+    '''
+    def __sub__(self, other):
+        if other.rowCount != self.rowCount() or other.columnCount() != self.columnCount():
+            raise ValueError("Matrix dimensions have to match for subtraction")
+
+        result = Matrix(self.rowCount(), self.columnCount())
+        for row in range(self.rowCount()):
+            result[row] = [self[row][column]-other[row][column] for column in range(self.columnCount())]
+
+    '''
     Returns a new matrix C.
     self * other = C
     '''
@@ -149,6 +171,36 @@ class Matrix:
         return transposed
 
     '''
+    Solves Ax = (b_1, ..., b_n)
+    '''
+    def solve(self, b):
+        if not isinstance(b, Matrix):
+            raise ValueError("Can only solve for matrix b")
+
+        if b.rowCount() != self.rowCount():
+            raise ValueError("Matrix dimensions don't match")
+
+        (c, l, r, p, sc) = self.getLR()
+
+        # Find solution to ly = b
+        ly = b.getCopy()
+        for rowPointer in range(1, b.rowCount()):
+            for colPointer in range(ly.columnCount()):
+                ly[rowPointer][colPointer] -= l.rowAt(rowPointer)[rowPointer-1]*ly.rowAt(rowPointer-1)[colPointer]
+
+        print("<math>{0}</math>".format(ly))
+        print("<math>{0}</math>".format(r))
+
+        # Find solution to rx = ly
+        rx = ly.getCopy()
+        for rowPointer in reversed(range(1, b.rowCount())):
+            print(rowPointer)
+            for colPointer in range(rx.columnCount()):
+                print(r.rowAt(rowPointer)[b.columnCount()-rowPointer])
+                rx[rowPointer][colPointer] -= r.rowAt(rowPointer)[b.columnCount()-rowPointer]*rx.rowAt(rowPointer+1)[colPointer]
+
+        print("<math>{0}</math>".format(rx))
+    '''
     Returns determinant of this matrix
     '''
     def getDeterminant(self):
@@ -180,6 +232,7 @@ class Matrix:
     def getLR(self):
         t = self.getCopy()
         (p, sc) = t.__lr()
+
         l = Matrix(self.rowCount(), self.columnCount())
         r = Matrix(self.rowCount(), self.columnCount())
         for i in range(self.rowCount()):

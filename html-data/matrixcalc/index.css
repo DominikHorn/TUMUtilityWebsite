@@ -57,33 +57,6 @@
 	opacity: 1;
 }
 
-/* Making the header responsive */
-
-@media all and (max-width: 600px) {
-	.header {
-		padding: 20px 0;
-		height: 75px;
-	}
-
-	.header .header-limiter h1 {
-		float: none;
-		margin: -8px 0 10px;
-		text-align: center;
-		font-size: 24px;
-		line-height: 1;
-	}
-
-	.header .header-limiter nav {
-		line-height: 1;
-		float:none;
-	}
-
-	.header .header-limiter nav a {
-		font-size: 13px;
-	}
-
-}
-
 /* For the headers to look good, be sure to reset the margin and padding of the body */
 
 body {
@@ -96,7 +69,6 @@ body {
     flex-direction: row;     /* make main axis horizontal (default setting) */
     justify-content: center; /* center items horizontally, in this case */
     align-items: center;     /* center items vertically, in this case */
-    height: 300px;
 }
 
 .box {
@@ -120,4 +92,40 @@ textarea {
   font-family: "Courier New", Courier, monospace;
   border-radius: 20px;
   padding: 10px;
+}
+
+footer {
+	margin-top: 50px;
+}
+
+/* Making the header responsive */
+
+@media all and (max-width: 500px) {
+	.header {
+		padding: 20px 0;
+		height: 50px;
+	}
+
+	.header .header-limiter h1 {
+		float: none;
+		margin: -8px 0 10px;
+		text-align: center;
+		font-size: 24px;
+		line-height: 1;
+	}
+
+	.header .header-limiter nav {
+		line-height: 1;
+		float:none;
+	}
+
+	.header .header-limiter nav a {
+		font-size: 16px;
+	}
+}
+
+@media only screen and (max-device-width: 650px) {
+	#container {
+		flex-direction: column;     /* make main axis horizontal (default setting) */
+	}
 }

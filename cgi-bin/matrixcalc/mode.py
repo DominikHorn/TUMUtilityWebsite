@@ -145,7 +145,7 @@ class ModeLRZE(Mode):
 
         print("<div class='center'><h3>Result:</h3>")
         try:
-            (c, l, r, p) = ma.getLR()
+            (c, l, r, p, sc) = ma.getLR()
             print("<math style='display: inline-block;'><mi>C</mi> <mo>=</mo>{0}</math>".format(c))
             print("<math style='display: inline-block;'><mi>L</mi> <mo>=</mo>{0}</math>".format(l))
             print("<math style='display: inline-block;'><mi>R</mi> <mo>=</mo>{0}</math>".format(r))
@@ -173,5 +173,40 @@ class ModeDete(Mode):
         print("<div class='center'><h3>Result:</h3>")
         print("<math style='display: inline-block;'><mi>det(A)</mi> <mo>=</mo> <mn>{0}</mn>".format(ma.getDeterminant()))
 
+class ModeSolve(Mode):
+    def getShortDesc(self):
+        return "solve"
+
+    def handle(self, a, b=None):
+        try:
+            ma = parseTextToMatrix(a)
+        except ValueError as e:
+            print("""<script> swal({
+                title: "Could not left Matrix",
+                text: "{0}",
+                type: "error",
+                confirmButtonText: "Ok"});</script>""".format(e))
+            return
+        try:
+            mb = parseTextToMatrix(b)
+        except ValueError as e:
+            print("""<script> swal({
+                title: "Could not parse right Matrix",
+                text: "{0}",
+                type: "error",
+                confirmButtonText: "Ok"});</script>""".format(e))
+            return
+
+        # Temporary
+        try:
+            ma.solve(mb)
+        except ValueError as e:
+            print("""<script> swal({
+                title: "An error occured solving the matrix equation",
+                text: "{0}",
+                type: "error",
+                confirmButtonText: "Ok"});</script>""".format(e))
+            return
+
 def getModes():
-    return {"mult" : ModeMult(), "tran" : ModeTran(), "symm" : ModeSymm(), "lrze" : ModeLRZE(), "dete" : ModeDete()}
+    return {"mult" : ModeMult(), "tran" : ModeTran(), "symm" : ModeSymm(), "lrze" : ModeLRZE(), "dete" : ModeDete()}#, "solv" : ModeSolve()}
