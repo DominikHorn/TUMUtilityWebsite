@@ -1,35 +1,77 @@
 <!DOCTYPE HTML>
-<html lang = "en">
-  <head>
-    <title>Dominik Horn's Homepage</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="style/index.css">
+<html>
+	<head>
+		<title>Projects by Dominik Horn</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body>
 
-    <!-- These two scripts add MathML support for google Chrome -->
-    <script>window.MathJax = { MathML: { extensions: ["mml3.js", "content-mathml.js"]}};</script>
-    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=MML_HTMLorMML"></script>
-  </head>
-  <body>
-    <div id="alert">
-      <a class="alert" href="#alert">Diese Website ist momentan noch in Entwicklung. Und ich bin kein Webentwickler...</a>
-    </div>
-    <div class="homepage">
-      <header>
-        <!-- Hier sollte ein header hin -->
-        <h1>Nützliche Links:</h1>
-      </header>
-      <article>
-        Module:
-        <ul>
-          <li>MA0901 Lineare Algebra<ul>
-            <li><a href="cgi-bin/matrixcalc/index.py">Matrizen Rechner</a></li>
-            <li><a href="disclaimer.html">Mitschrift</a>
-          </ul></li>
-        </ul>
-      </article>
-      <footer>
-        <!-- Hier sollte ein footer hin -->
-      </footer>
-    </div>
-  </body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<span class="avatar"><img src="images/avatar.jpg" alt="" /></span>
+						<h1><strong>Welcome to my Homepage!</strong><br>
+							You may find some of my interesting projects here</h1>
+						<ul class="icons">
+							<li>Reach me via:</li>
+							<li><a href="https://github.com/DominikHorn" class="icon style2 fa-github"><span class="label">Github</span></a></li>
+							<li><a href="mailto:dominik.horn@tum.de" class="icon style2 fa-envelope-o"><span class="label">Email</span></a></li>
+						</ul>
+					</header>
+
+				<!-- Main -->
+					<section id="main">
+
+						<!-- Thumbnails -->
+							<section class="thumbnails">
+								<div>
+									<a href="https://github.com/DominikHorn/OpenGLEngine/tree/dev">
+										<img src="images/thumbs/05.jpg" alt="" />
+										<h3>Custom OpenGL Game Engine</h3>
+									</a>
+									<a href="http://home.in.tum.de/~horndo/cgi-bin/matrixcalc/index.py">
+										<img src="images/thumbs/01.jpg" alt="" />
+										<h3>Web-based Matrix Calculator written with python-cgi</h3>
+									</a>
+									<a href="http://www.cosmetics-and-more.de">
+										<img src="images/thumbs/02.jpg" alt="" />
+										<h3>Custom website written from scratch using html, css and js</h3>
+									</a>
+								</div>
+								<div>
+									<a href="https://github.com/DominikHorn/Chip8Emu">
+										<img src="images/thumbs/03.jpg" alt="" />
+										<h3>Chip-8 Emulator written in Java with OpenGL</h3>
+									</a>
+									<a href="https://github.com/DominikHorn/CookBuddy">
+										<img src="images/thumbs/04.jpg" alt="" />
+										<h3>[Currently not published and only private]<br>iOS Chore-Utility App for planning and cooking dishes</h3>
+									</a>
+								</div>
+								<div>
+									<a href="https://github.com/DominikHorn/MA0901-LinAlg-Releases">
+										<img src="images/thumbs/07.jpg" alt="" />
+										<h3>Pandoc document containing math lecture notes. Autocompiled and released using travis-ci</h3>
+									</a>
+									<a href="https://github.com/DominikHorn/Quizduellbot">
+										<img src="images/thumbs/06.jpg" alt="" />
+										<h3>A Bot that automatically plays and wins Quizduell games against other players</h3>
+									</a>
+								</div>
+							</section>
+
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p>&copy; Dominik Horn. All rights reserved. This website is hosted using
+							services provided<br>to all Computer Science Students of <a href="https://www.tum.de">TUM</a>. It is based on a template from <a href="https://templated.co">template.co</a></p>
+					</footer>
+
+			</div>
+	</body>
 </html>
